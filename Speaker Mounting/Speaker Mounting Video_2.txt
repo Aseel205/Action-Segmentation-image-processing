@@ -1,0 +1,8 @@
+attach                  1hand  (0:03-0:07)  
+screw   in  ScrewDriver 1hand   (0:30-0:34)  
+screw   in  ScrewDriver 1hand   (0:40-0:43)  
+attach                  1hand  (0:48-1:10)  
+screw   in  ScrewDriver 1hand   (1:27-1:29)  
+screw   in  ScrewDriver 2hand   (1:31-1:33)  
+screw   in  ScrewDriver 1hand   (1:35-1:37)  
+screw   in  ScrewDriver 1hand   (1:40-1:44)  
