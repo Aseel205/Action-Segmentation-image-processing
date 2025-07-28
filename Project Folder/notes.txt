@@ -1,0 +1,28 @@
+Your project pipeline summary:
+extract_frames.py: Extracts frames from raw videos (saved as JPG images).
+
+extract_features.py (or video_feature_utils.py): Extracts deep CNN features (ResNet18) from frames or directly from video.
+
+prepare_labels.py: Converts your annotation text files to per-frame integer labels aligned with features.
+
+dataset.py and train_multi.py: Define dataset and train a Temporal Convolutional Network (TCN) on multi-video features + labels.
+
+model.py: Defines the SimpleTCN model architecture.
+
+inference_pipeline.py: Given a new video, extracts features, runs inference on the trained TCN model, and outputs action segments with timestamps.
+
+What you need to do (step-by-step):
+Step 1: Extract frames from each video
+For each video in vedios/Speaker Mounting Videos/, run extract_frames.py specifying output folders (e.g., frames/Video_1/).
+
+Step 2: Extract features from frames
+Run extract_features.py for each frames/Video_X/ folder to produce .npy feature files in features/.
+
+Step 3: Prepare labels
+Run prepare_labels.py for each video annotation .txt file and corresponding .npy features to produce aligned .npy labels in labels/.
+
+Step 4: Train model
+Run train_multi.py to train the TCN on the features + labels of multiple videos.
+
+Step 5: Run inference
+Use inference_pipeline.py with a test video and the saved model (model.pth) to predict and print action segments.
