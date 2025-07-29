@@ -1,0 +1,12 @@
+0 attach_1hand
+1 background 
+2 plug_1hand
+3 screwdriver_1hand
+4 screwdriver_2hand
+
+// TODO
+5 plug_2hand
+6 attach_1hand
+7 attach_2hand
+8 cover_2hand
+9 close_2_hand  
