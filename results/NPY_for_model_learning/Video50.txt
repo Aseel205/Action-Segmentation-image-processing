@@ -1,0 +1,9 @@
+Cover_Uncover_2_X
+Screw_Out_1_Screwdriver
+Plug_Unplug_1_X
+Attach_Detach_1_X
+Screw_Out_2_Screwdriver
+Plug_Unplug_1_X
+Screw_Out_2_Screwdriver
+Screw_Out_1_Screwdriver
+Attach_Detach_1_X

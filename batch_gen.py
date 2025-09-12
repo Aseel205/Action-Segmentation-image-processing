@@ -1,0 +1,86 @@
+#!/usr/bin/python2.7
+
+import torch
+import numpy as np
+import random
+
+
+class BatchGenerator(object):
+    def __init__(self, num_classes, actions_dict, gt_path, features_path, sample_rate):
+        self.list_of_examples = list()
+        self.index = 0
+        self.num_classes = num_classes
+        self.actions_dict = actions_dict
+        self.gt_path = gt_path
+        self.features_path = features_path
+        self.sample_rate = sample_rate
+
+    def reset(self):
+        self.index = 0
+        random.shuffle(self.list_of_examples)
+
+    def has_next(self):
+        return self.index < len(self.list_of_examples)
+
+    def read_data(self, vid_list_file):
+        with open(vid_list_file, 'r') as file_ptr:
+            self.list_of_examples = file_ptr.read().split('\n')[:-1]
+        random.shuffle(self.list_of_examples)
+
+    def next_batch(self, batch_size):
+        batch = self.list_of_examples[self.index:self.index + batch_size]
+        self.index += batch_size
+
+        batch_input = []
+        batch_target = []
+        for vid in batch:
+            try:
+                features = np.load(self.features_path + vid.split('.')[0] + '.npy')
+                with open(self.gt_path + vid.split('.')[0] + '.txt', 'r') as file_ptr:
+                    content = file_ptr.read().split('\n')
+                content = [line.strip() for line in content if line.strip() != '']
+
+                if len(content) == 0:
+                    print(f"⚠️ Warning: Label file '{vid.split('.')[0]}.txt' is empty.")
+                    continue
+
+                feature_len = features.shape[1]
+                label_len = len(content)
+                min_len = min(feature_len, label_len)
+
+                # Truncate features and labels to minimum length
+                features = features[:, :min_len]
+                content = content[:min_len]
+
+                classes = np.zeros(min_len)
+                for i in range(min_len):
+                    label = content[i]
+                    if label not in self.actions_dict:
+                        print(f"❌ Error: Label '{label}' not in actions_dict!")
+                        raise ValueError(f"Unknown label '{label}'")
+                    classes[i] = self.actions_dict[label]
+
+                batch_input.append(features[:, ::self.sample_rate])
+                batch_target.append(classes[::self.sample_rate])
+
+            except Exception as e:
+                print(f"❌ Skipping '{vid}': {e}")
+                continue
+
+        if len(batch_input) == 0:
+            raise ValueError("❌ No valid samples found in batch.")
+
+        length_of_sequences = list(map(len, batch_target))
+        max_seq_len = max(length_of_sequences)
+
+        batch_input_tensor = torch.zeros(len(batch_input), np.shape(batch_input[0])[0], max_seq_len, dtype=torch.float)
+        batch_target_tensor = torch.ones(len(batch_input), max_seq_len, dtype=torch.long) * (-100)
+        mask = torch.zeros(len(batch_input), self.num_classes, max_seq_len, dtype=torch.float)
+
+        for i in range(len(batch_input)):
+            curr_len = np.shape(batch_input[i])[1]
+            batch_input_tensor[i, :, :curr_len] = torch.from_numpy(batch_input[i])
+            batch_target_tensor[i, :len(batch_target[i])] = torch.from_numpy(batch_target[i])
+            mask[i, :, :len(batch_target[i])] = torch.ones(self.num_classes, len(batch_target[i]))
+
+        return batch_input_tensor, batch_target_tensor, mask
