@@ -6,8 +6,8 @@ import torchvision.models as models
 import numpy as np
 
 # Change these paths to your setup
-VIDEO_DIR = './data/aseel_custom/videos/'     # Your 6 raw videos folder
-FEATURES_DIR = './data/aseel_custom/features/' # Output folder for .npy features
+VIDEO_DIR = './data/aseel_custom/videos/Fan Mounting/'     # Your 6 raw videos folder
+FEATURES_DIR = './data/aseel_custom/features/fan_mounting/' # Output folder for .npy features
 
 os.makedirs(FEATURES_DIR, exist_ok=True)
 

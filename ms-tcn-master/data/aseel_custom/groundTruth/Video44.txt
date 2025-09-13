@@ -1,0 +1,14 @@
+Cover_Uncover_2_X  (0:18-0:21)
+Plug_Unplug_1_X  (0:23-0:25)
+Screw_Out_2_Screwdriver   (0:30-0:36)  
+Screw_Out_2_Screwdriver   (0:37-0:39)  
+Screw_Out_2_Screwdriver   (0:40-0:55)  
+Screw_Out_2_Screwdriver   (0:56-1:02)
+Attach_Detach_1_X   (1:03-1:05)  
+Screw_Out_1_Screwdriver   (1:14-1:24)  
+Screw_Out_1_Screwdriver   (1:28-1:30)  
+Screw_Out_1_Screwdriver   (1:40-1:46)  
+Attach_Detach_1_X   (1:48-1:50)  
+
+
+

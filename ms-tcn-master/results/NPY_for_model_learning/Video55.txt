@@ -1,0 +1,14 @@
+Screw_Out_2_Screwdriver
+Cover_Uncover_2_X
+Screw_Out_2_Screwdriver
+Attach_Detach_1_X
+Plug_Unplug_1_X
+Screw_Out_1_Screwdriver
+Attach_Detach_1_X
+Screw_Out_1_Screwdriver
+Attach_Detach_1_X
+Screw_In_1_Screwdriver
+Screw_In_2_Screwdriver
+Attach_Attach_1_X
+Screw_In_1_Screwdriver
+Cover_Cover_2_X

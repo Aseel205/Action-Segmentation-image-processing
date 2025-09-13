@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# to run the file :  python main.py --action train --dataset aseel_custom --split 1 
+# this file to train the model 
 
 import torch
 import os
@@ -37,30 +38,31 @@ num_epochs = 50
 sample_rate = 2 if args.dataset == "50salads" else 1
 
 # Paths
-base_path = f"./data/{args.dataset}"
-vid_list_file = f"{base_path}/splits/train.split{args.split}.bundle"
-vid_list_file_tst = f"{base_path}/splits/test.split{args.split}.bundle"
-features_path = f"{base_path}/features/"
-gt_path = f"{base_path}/groundTruth/"
-mapping_file = f"{base_path}/mapping.txt"
+base_path = f"./data/aseel_custom"    # ok 
+vid_list_file = f"{base_path}/splits/train.split1.bundle"    # ok
+vid_list_file_tst = f"{base_path}/splits/test.split1.bundle"   # ok
+features_path = f"{base_path}/features/NPY FOR model learning/"   #ok  
+gt_path = f"{base_path}/groundTruth/FinalData/"  #ok   
+mapping_file = f"{base_path}/mapping.txt" #ok 
 
-model_dir = f"./models/{args.dataset}/split_{args.split}"
-results_dir = f"./results/{args.dataset}/split_{args.split}"
+model_dir = f"./models/aseel_custom/split_1"  
+results_dir = f"./results/aseel_custom/split_1"
 
 # Create output directories
 os.makedirs(model_dir, exist_ok=True)
 os.makedirs(results_dir, exist_ok=True)
 
-# Read action mappings safely
+# Read action mappings safely (fixed to keep full label names)
 actions_dict = {}
-with open(mapping_file, 'r') as f:
+with open(mapping_file, 'r', encoding='utf-8') as f:
     for line in f:
         line = line.strip()
         if not line:
             continue
         parts = line.split()
         if len(parts) >= 2:
-            actions_dict[parts[1]] = int(parts[0])
+            action_name = " ".join(parts[1:])  # keep entire label name
+            actions_dict[action_name] = int(parts[0])
 
 num_classes = len(actions_dict)
 

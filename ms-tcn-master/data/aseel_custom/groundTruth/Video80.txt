@@ -1,0 +1,32 @@
+Attach_Detach_1_X (0:02 - 0:03)
+Attach_Detach_1_X (0:05 - 0:08)
+Screw_In_1_Screwdriver   (0:17-0:19)  
+Screw_In_1_Screwdriver   (0:24-0:27)
+Plug_Plug_1_X   (0:32 - 0:35)
+Plug_Plug_1_X   (0:42 - 0:46)
+Plug_Plug_1_X   (0:50 - 0:53)  
+Screw_In_2_Screwdriver   (1:15-1:18)  
+Screw_In_2_Screwdriver   (1:21-1:23)  
+Screw_In_2_Screwdriver   (1:25-1:29)  
+Screw_In_1_Screwdriver   (1:32-1:36)  
+Plug_Plug_1_X  (1:40-1:43)  
+
+
+Attach_Attach_1_X
+Screw_In_1_Screwdriver
+Plug_Plug_1_X
+Screw_In_1_Screwdriver
+Plug_Plug_1_X
+Screw_In_1_Screwdriver
+Plug_Plug_1_X
+Screw_In_1_Screwdriver
+Screw_Out_2_Screwdriver
+Plug_Unplug_1_X
+Screw_Out_2_Screwdriver
+Plug_Unplug_1_X
+Screw_Out_2_Screwdriver
+Plug_Unplug_1_X
+Screw_Out_2_Screwdriver
+Plug_Unplug_1_X
+Screw_Out_2_Screwdriver
+Lift_Lift_1_X

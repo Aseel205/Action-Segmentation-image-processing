@@ -4,22 +4,20 @@ import numpy as np
 from model import Trainer
 
 # --- CONFIG ---
-dataset = "gtea"
-split = "1"
 epoch_to_load = 50
 
-video_name = "fan_mounting_1.npy"  # feature filename (with .npy)
-features_path = "./data/aseel_custom/features/"  # folder with .npy features
-
+# Single video to predict
+video_name = "Video80.npy"  # just the filename
+features_folder = "data/aseel_custom/features/NPY FOR model learning"  # folder containing all .npy
 model_dir = "./models/aseel_custom/split_1"
-results_dir = f"./results/{dataset}/split_{split}"
-mapping_file = "./data/aseel_custom/mapping.txt"  # adjust to your mapping file
+results_dir = "results/NPY_for_model_learning"  # output folder
+mapping_file = "./data/aseel_custom/mapping.txt"
 
 os.makedirs(results_dir, exist_ok=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load action label mapping
+# --- Load action label mapping ---
 actions_dict = {}
 with open(mapping_file, 'r') as f:
     for line in f:
@@ -29,21 +27,21 @@ with open(mapping_file, 'r') as f:
 idx_to_action = {v: k for k, v in actions_dict.items()}
 num_classes = len(actions_dict)
 
-# Load features
-feature_file = os.path.join(features_path, video_name)
+# --- Load features ---
+feature_file = os.path.join(features_folder, video_name)
 if not os.path.exists(feature_file):
     raise FileNotFoundError(f"Feature file not found: {feature_file}")
 
 features = np.load(feature_file)
 input_x = torch.tensor(features, dtype=torch.float).unsqueeze(0).to(device)  # (1, 2048, T)
 
-# Load model
+# --- Load model ---
 trainer = Trainer(num_blocks=4, num_layers=10, num_f_maps=64, dim=2048, num_classes=num_classes)
-trainer.model.load_state_dict(torch.load(f"{model_dir}/epoch-{epoch_to_load}.model"))
+trainer.model.load_state_dict(torch.load(f"{model_dir}/epoch-{epoch_to_load}.model", map_location=device))
 trainer.model.to(device)
 trainer.model.eval()
 
-# Predict
+# --- Predict ---
 with torch.no_grad():
     predictions = trainer.model(input_x)
     _, predicted = torch.max(predictions[-1].data, 1)
@@ -51,7 +49,7 @@ with torch.no_grad():
 
 predicted_labels = [idx_to_action[idx] for idx in predicted]
 
-# Compress consecutive duplicates into single labels
+# --- Compress consecutive duplicates ---
 def compress_predictions(labels):
     if not labels:
         return []
@@ -63,11 +61,13 @@ def compress_predictions(labels):
 
 compressed_labels = compress_predictions(predicted_labels)
 
-# Save compressed predictions
-output_file = os.path.join(results_dir, os.path.splitext(video_name)[0])
+# --- Save predictions ---
+output_file = os.path.join(results_dir, video_name.replace(".npy", ".txt"))
 with open(output_file, "w") as f:
-    f.write("### Compressed frame level recognition: ###\n")
-    f.write(" ".join(compressed_labels))
+    for label in compressed_labels:
+        f.write(label + "\n")
 
 print(f"Prediction saved to: {output_file}")
-print("Compressed predicted actions:", compressed_labels)
+print("Compressed predicted actions:")
+for label in compressed_labels:
+    print(label)
